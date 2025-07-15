@@ -1,0 +1,11 @@
+.env
+*.pyc
+.idea/
+__pycache__/
+faiss-db/
+financial-agent/
+scripts/
+tests/
+extra
+*.zip
+
