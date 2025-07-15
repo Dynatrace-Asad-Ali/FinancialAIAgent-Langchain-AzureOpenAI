@@ -7,7 +7,6 @@ langchain>=0.3.25
 langchain-openai>=0.3.16
 langchain-core>=0.3.59
 langchain-community>=0.3.24
-langchain-tavily>=0.1.6
 langchain-text-splitters>=0.3.8
 langgraph>=0.4.3
 langgraph-supervisor>=0.0.21
@@ -17,7 +16,6 @@ yfinance>=0.2.61
 
 # Search and web scraping
 duckduckgo-search>=8.0.2
-tavily-python>=0.3.0
 
 # Vector storage and embeddings
 faiss-cpu>=1.11.0

@@ -5,7 +5,16 @@ The multiple agents used in this app uses OpenAI LLM Model and uses TavilySearch
 
 ### API Keys
 The following API keys are required for this app
-* OPENAI_API_KEY
+* AZURE_ENDPOINT
+* AZURE_MODEL_NAME
+* AZURE_DEPLOYMENT
+* AZURE_SUBSCRIPTION_KEY
+* AZURE_API_VERSION
+* AZURE_EMBEDDINGS_MODEL_DEPLOYMENT
+* AZURE_EMBEDDINGS_MODEL_NAME
+* AZURE_EMBEDDINGS_API_VERSION
+* AZURE_OPENAI_API_KEY
+
 
 ### Requirements
 * Python 3.8 or higher
