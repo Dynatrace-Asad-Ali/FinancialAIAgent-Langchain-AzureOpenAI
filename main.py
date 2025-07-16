@@ -66,7 +66,7 @@ class FinancialAgentApp:
                 news_agent_instance = NewsAgent(self.api_config)
                 fundamental_agent_instance = FundamentalAgent(self.api_config)
                 technical_agent_instance = TechnicalAgent(self.api_config)
-                humorous_agent_instance = HumorousNewsAgent(self.api_config,)
+                humorous_agent_instance = HumorousNewsAgent(self.api_config,self.embeddings_config)
 
                 # Initialize supervisor
                 self.supervisor = supervisor_agent(
