@@ -24,6 +24,9 @@
     "AZURE_SUBSCRIPTION_KEY": {
 		     "description": "Azure Subscription Key"
     },
+    "AZURE_API_VERSION": {
+		     "description": "Azure Api Version"
+    },
     "AZURE_EMBEDDINGS_MODEL_DEPLOYMENT": {
 		     "description": "Azure Embeddings Model Deployment"
     },
