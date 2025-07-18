@@ -12,9 +12,31 @@
 
 	// // Add recommended secrets
 	"secrets": {
-    "OPENAI_API_KEY": {
-		     "description": "OpenAI API Token. Go to https://platform.openai.com/api-keys"
+    "AZURE_ENDPOINT": {
+		     "description": "Azure Endpoint. The format looks like this https://<endPoint>.openai.azure.com"
     },
+    "AZURE_MODEL_NAME": {
+		     "description": "Azure Model Name"
+    },
+    "AZURE_DEPLOYMENT": {
+		     "description": "Azure Deployment"
+    },
+    "AZURE_SUBSCRIPTION_KEY": {
+		     "description": "Azure Subscription Key"
+    },
+    "AZURE_EMBEDDINGS_MODEL_DEPLOYMENT": {
+		     "description": "Azure Embeddings Model Deployment"
+    },
+    "AZURE_EMBEDDINGS_MODEL_NAME": {
+		     "description": "Azure Embeddings Model Name"
+    },
+    "AZURE_EMBEDDINGS_API_VERSION": {
+		     "description": "Azure Embeddings Api Version"
+    },
+    "AZURE_OPENAI_API_KEY": {
+		     "description": "Azure OpenAI Api Key"
+    },
+
     "DYNATRACE_EXPORTER_OTLP_ENDPOINT": {
 		     "description": "Dynatrace OTLP Endpoint. e.g. https://scu37051.live.dynatrace.com/api/v2/otlp"
     },
