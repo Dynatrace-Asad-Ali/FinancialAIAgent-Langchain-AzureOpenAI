@@ -1,49 +1,145 @@
-# MCP Servers & Client
-This sample application setups 2 mcp servers that run locally and one streamlit based mcp client. It uses langgraph framework for the client app and creates one node create react agent. The react native agent connects to 3 MCP servers:
-* Math MCP Server
-* Weather MCP Server
-* Dynatrace MCP Server (Running on a separate server)
+# MCP Multi-Agent System
 
+A sophisticated multi-agent system built with Model Context Protocol (MCP) that provides intelligent assistance through specialized servers for mathematics, weather, and Dynatrace monitoring.
 
-### API Keys
-The following API keys are required for this app
-* OPENAI_API_KEY
+## 🏗️ Architecture
 
-### Requirements
-* Python 3.8 or higher
+This application implements a clean, modular architecture:
 
-### Usage
-The app uses streamlit to create a web page so that users can interact with the app using browser. Once the app is launched, it spits out the url to access the app. Open a browser window and put the url to access the UI of this app.
-
-### Instrumentation
-The app uses traceloop to send telemetry data. If you want to capture those telemetry data please add the endpoints in .env file.
-
-To get tracing data in Dynatrace, provide these keys:
-* DYNATRACE_EXPORTER_OTLP_ENDPOINT (e.g <tenant>.live.dynatrace.com/api/v2/otlp)
-* DYNATRACE_API_TOKEN
-
-### How to run
-#### On Desktop
-Copy .env.template to .env. 
-Update .env file with all the required keys
-```commandline
-python -m venv financialagent
-financialagent/bin/activate
-pip install -r requirements.txt
-python math_mcp_server.py &
-python weather_mcp_server.py &
-streamlit run app.py
 ```
-pyt
-#### Codespaces
-```commandline
-./run-mcp.sh
+mcp/
+├── app.py          # Main application with proper structure
+├── config_manager.py        # Configuration management
+├── session_manager.py       # Session lifecycle management
+├── ui_components.py         # Reusable UI components
+├── math_server.py  # Enhanced math operations server
+├── weather_server.py # Enhanced weather information server
+└── utils.py                 # Utility functions
 ```
-### Suggested Chat Commands
-* How many tools do you have
-* Name the tools that you have
-* What is 2 + 4   /* Look at the answer. Is it correct? */
-* What is the weather in Orlando
-* List Dynatrace capabilities provided by the Dynatrace tool
-* List all the vulnerabilities in my Dynatrace tenant
-* List top 5  problems in the Dynatrace tenant
+
+## 🚀 Features
+
+### Core Capabilities
+- **Multi-Server Architecture**: Connects to multiple MCP servers simultaneously
+- **Real-time Streaming**: Live response streaming with tool execution visibility
+- **Session Management**: Robust session handling with cleanup and reset
+- **Error Handling**: Comprehensive error handling and user feedback
+- **Configuration Management**: Flexible server configuration with validation
+
+### Available Services
+1. **Math Server**: Advanced mathematical operations including:
+   - Basic arithmetic (add, subtract, multiply, divide)
+   - Advanced functions (power, square root, logarithms)
+   - Trigonometric functions (sin, cos, tan)
+   - Statistical calculations (mean, median)
+   - Quadratic equation solver
+
+2. **Weather Server**: Weather information service with:
+   - Current conditions for major cities
+   - Multi-city weather summaries
+   - Weather-based recommendations
+   - Friendly, conversational responses
+
+3. **Dynatrace Server**: Monitoring and observability queries (external)
+
+## 📋 Requirements
+
+- Python 3.8+
+- OpenAI API key
+- Optional: Dynatrace credentials for observability
+
+## 🚀 Quick Start
+
+1. **Setup Environment**:
+   ```bash
+   python -m venv mcp-env
+   source mcp-env/bin/activate  # On Windows: mcp-env\Scripts\activate
+   pip install -r requirements_updated.txt
+   ```
+
+2. **Configure Environment**:
+   ```bash
+   cp ../.env.template .env
+   # Edit .env with your API keys
+   ```
+
+3. **Start MCP Servers**:
+   ```bash
+   # Terminal 1: Math Server
+   python math_server.py
+
+   # Terminal 2: Weather Server  
+   python weather_server.py
+   ```
+
+4. **Run Application**:
+   ```bash
+   streamlit run app.py
+   ```
+
+## 💡 Usage Examples
+
+### Math Operations
+- "What is 25 * 47?"
+- "Calculate the square root of 144"
+- "Solve the quadratic equation x² - 5x + 6 = 0"
+- "What's the sine of 45 degrees?"
+
+### Weather Queries
+- "What's the weather in New York?"
+- "Give me weather for London and Paris"
+- "How's the weather in Tokyo?"
+
+### Dynatrace Monitoring
+- "List Dynatrace capabilities"
+- "Show me the top 5 problems in my tenant"
+- "List all vulnerabilities"
+
+## 🔧 Configuration
+
+The application uses `config.json` for MCP server configuration:
+
+```json
+{
+  "math": {
+    "url": "http://localhost:8000/mcp",
+    "transport": "streamable_http"
+  },
+  "weather": {
+    "url": "http://localhost:8080/mcp", 
+    "transport": "streamable_http"
+  },
+  "dynatrace": {
+    "url": "http://52.186.168.229:3000/mcp",
+    "transport": "streamable_http"
+  }
+}
+```
+
+## 🔍 Monitoring & Observability
+
+The application supports Dynatrace integration for observability:
+
+```bash
+export DYNATRACE_EXPORTER_OTLP_ENDPOINT="https://your-tenant.live.dynatrace.com/api/v2/otlp"
+export DYNATRACE_API_TOKEN="your-api-token"
+```
+
+## 🧪 Testing
+
+Run the test suite:
+```bash
+pytest tests/ -v
+```
+
+## 🤝 Contributing
+
+1. Follow the modular architecture patterns
+2. Add comprehensive error handling
+3. Include type hints and documentation
+4. Test your changes thoroughly
+5. Update README for new features
+
+## 📝 License
+
+This project is part of the FinancialAIAgent system and follows the same licensing terms.

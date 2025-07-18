@@ -4,7 +4,7 @@ from mcp.server.fastmcp import FastMCP
 import math
 from typing import Union
 
-mcp = FastMCP("Math", description="Advanced mathematical operations server")
+mcp = FastMCP(name="Math", description="Advanced mathematical operations server", host="0.0.0.0", port=8000)
 
 # Enhanced prompts
 @mcp.prompt()
@@ -169,4 +169,4 @@ def solve_quadratic(a: float, b: float, c: float) -> dict:
         }
 
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http", host="0.0.0.0", port=8000)
+    mcp.run(transport="streamable-http")

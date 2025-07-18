@@ -8,4 +8,4 @@ scripts/
 tests/
 extra
 *.zip
-
+.DS_Store
