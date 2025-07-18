@@ -15,7 +15,7 @@ langgraph-supervisor>=0.0.21
 yfinance>=0.2.61
 
 # Search and web scraping
-duckduckgo-search>=8.0.2
+langchain-tavily==0.1.6
 
 # Vector storage and embeddings
 faiss-cpu>=1.11.0
