@@ -13,6 +13,7 @@ class APIConfig:
     azure_deployment: str
     azure_subscription_key: str
     azure_api_version: str
+    tavily_api_key: str
     langchain_api_key: Optional[str] = None
     dynatrace_endpoint: Optional[str] = None
     dynatrace_token: Optional[str] = None
@@ -42,7 +43,8 @@ def load_config() -> tuple[APIConfig, AppConfig, EmbeddingsConfig]:
       azure_api_version = os.environ.get("AZURE_API_VERSION"),
       langchain_api_key=os.getenv("LANGCHAIN_API_KEY"),
       dynatrace_endpoint=os.getenv("DYNATRACE_EXPORTER_OTLP_ENDPOINT"),
-      dynatrace_token=os.getenv("DYNATRACE_API_TOKEN")
+      dynatrace_token=os.getenv("DYNATRACE_API_TOKEN"),
+      tavily_api_key=os.getenv("TAVILY_API_KEY")
     )
 
     app_config = AppConfig(

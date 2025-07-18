@@ -1,13 +1,13 @@
 """Improved news agent with better error handling and caching."""
 from typing import List
 from langchain_core.tools import BaseTool
-from langchain_community.tools import DuckDuckGoSearchRun
 from agents.base_agent import BaseAgent
 from core.exceptions import ToolExecutionError
 from core.logging_config import setup_logging
 import time
 from functools import lru_cache
 from config.settings import APIConfig
+from langchain_tavily import TavilySearch
 
 logger = setup_logging()
 
@@ -20,7 +20,7 @@ class NewsAgent(BaseAgent):
 
     def get_tools(self) -> List[BaseTool]:
         """Get news search tools."""
-        return [DuckDuckGoSearchRun()]
+        return [TavilySearch(max_results=5,topic="news")]
 
     def get_prompt(self) -> str:
         """Get agent prompt."""

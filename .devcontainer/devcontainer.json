@@ -39,7 +39,9 @@
     "AZURE_OPENAI_API_KEY": {
 		     "description": "Azure OpenAI Api Key"
     },
-
+    "TAVILY_API_KEY": {
+		     "description": "Api Key for Tavily Search"
+    },
     "DYNATRACE_EXPORTER_OTLP_ENDPOINT": {
 		     "description": "Dynatrace OTLP Endpoint. e.g. https://scu37051.live.dynatrace.com/api/v2/otlp"
     },
