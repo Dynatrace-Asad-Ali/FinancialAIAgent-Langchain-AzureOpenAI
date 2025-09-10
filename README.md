@@ -10,10 +10,10 @@ The following API keys are required for this app
 * AZURE_DEPLOYMENT
 * AZURE_SUBSCRIPTION_KEY
 * AZURE_API_VERSION
+* AZURE_OPENAI_API_KEY
 * AZURE_EMBEDDINGS_MODEL_DEPLOYMENT
 * AZURE_EMBEDDINGS_MODEL_NAME
 * AZURE_EMBEDDINGS_API_VERSION
-* AZURE_OPENAI_API_KEY
 
 
 ### Requirements
@@ -26,7 +26,7 @@ The app uses streamlit to create a web page so that users can interact with the 
 The app uses traceloop to send telemetry data. If you want to capture those telemetry data please add the endpoints in .env file.
 
 To get tracing data in Dynatrace, provide these keys:
-* DYNATRACE_EXPORTER_OTLP_ENDPOINT (e.g <tenant>.live.dynatrace.com/api/v2/otlp)
+* DYNATRACE_EXPORTER_OTLP_ENDPOINT (e.g \<tenant\>.live.dynatrace.com/api/v2/otlp)
 * DYNATRACE_API_TOKEN
 
 ### How to run
