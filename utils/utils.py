@@ -44,6 +44,7 @@ async def astream_graph(
     prev_node = ""
 
     if stream_mode == "messages":
+        print("In messages")
         for chunk_msg, metadata in graph.stream(
             inputs, config, stream_mode=stream_mode
         ):
@@ -53,9 +54,7 @@ async def astream_graph(
                 "content": chunk_msg,
                 "metadata": metadata,
             }
-
             if not node_names or curr_node in node_names:
-
                 if callback:
                     result = callback({"node": curr_node, "content": chunk_msg})
                     if hasattr(result, "__await__"):
@@ -67,8 +66,9 @@ async def astream_graph(
                         print("- " * 25)
 
                     if hasattr(chunk_msg, "content"):
-                        # 리스트 형태의 content (Anthropic/Claude 스타일)
+                        print("chunk_msg has contents")
                         if isinstance(chunk_msg.content, list):
+                            print("chunk_msg is a list")
                             for item in chunk_msg.content:
                                 if isinstance(item, dict) and "text" in item:
                                     print(item["text"], end="", flush=True)
@@ -81,7 +81,6 @@ async def astream_graph(
                 prev_node = curr_node
 
     elif stream_mode == "updates":
-
         async for chunk in graph.astream(
             inputs, config, stream_mode=stream_mode, subgraphs=include_subgraphs
         ):

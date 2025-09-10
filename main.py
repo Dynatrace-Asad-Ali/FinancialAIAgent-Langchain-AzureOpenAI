@@ -1,9 +1,11 @@
 """Improved main application with better structure and error handling."""
+from datetime import datetime
+
 import streamlit as st
 import asyncio
 from typing import Optional, Dict, Any
 import time
-
+import os
 # Local imports
 from config.settings import load_config, validate_config
 from core.exceptions import FinancialAgentError, ConfigurationError
@@ -21,12 +23,31 @@ from agents.supervisor_agent import supervisor_agent
 from utils.utils import astream_graph
 from langchain_core.messages import HumanMessage
 from langchain_core.runnables import RunnableConfig
-from langchain_core.messages.ai import AIMessageChunk
+from langchain_core.messages.ai import AIMessageChunk, AIMessage
 from langchain_core.messages.tool import ToolMessage
-
+from dotenv import load_dotenv
+from traceloop.sdk import Traceloop
+from langfuse import Langfuse
+from langfuse.langchain import CallbackHandler
 
 # Initialize logging
 logger = setup_logging()
+
+load_dotenv()
+# langfuse = Langfuse(
+#     public_key=os.environ["LANGFUSE_PUBLIC_KEY"],
+#     secret_key=os.environ["LANGFUSE_SECRET_KEY"],
+#     host="https://us.cloud.langfuse.com"
+# )
+# langfuse_handler = CallbackHandler()
+
+headers = { "Authorization": "Api-Token " + os.environ.get("DYNATRACE_API_TOKEN") }
+Traceloop.init(
+    app_name="AATest",
+    api_endpoint=os.environ.get("DYNATRACE_EXPORTER_OTLP_ENDPOINT"),
+    headers=headers,
+    disable_batch=True
+)
 
 # Page configuration
 st.set_page_config(
@@ -77,8 +98,13 @@ class FinancialAgentApp:
                     humorous_agent_instance.agent
                 ).compile()
 
+                # Initialize session state
+                if "messages" not in st.session_state:
+                    st.session_state.messages = []
                 st.session_state.agent = self.supervisor
                 st.session_state.session_initialized = True
+                if "processing" not in st.session_state:
+                    st.session_state.processing = False
 
                 logger.info("All agents initialized successfully")
                 return True
@@ -158,7 +184,8 @@ class FinancialAgentApp:
             nonlocal accumulated_text, accumulated_tool
             message_content = message.get("content", None)
 
-            if isinstance(message_content, AIMessageChunk):
+            # if isinstance(message_content, AIMessageChunk):
+            if isinstance(message_content, AIMessage):
                 content = message_content.content
                 # If content is in list form (mainly occurs in Claude models)
                 if isinstance(content, list) and len(content) > 0:
@@ -275,6 +302,8 @@ class FinancialAgentApp:
                             config=RunnableConfig(
                                 recursion_limit=st.session_state.recursion_limit,
                                 thread_id=st.session_state.thread_id,
+                                callbacks=[]
+                                # callbacks=[langfuse_handler]
                             ),
                         ),
                         timeout=timeout_seconds,
@@ -324,8 +353,20 @@ class FinancialAgentApp:
 
         self.print_message()
 
-        user_query = st.chat_input("💬 Enter your question")
-        if user_query:
+        user_query = st.chat_input("💬 Enter your question" if not st.session_state.processing else "Processing your message...",
+                            disabled=st.session_state.processing, key="chat_input")
+        # user_query = st.chat_input("💬 Enter your question")
+        if user_query and not st.session_state.processing:
+            timestamp = datetime.now().strftime("%H:%M:%S")
+            st.session_state.messages.append({
+                "role": "user",
+                "content": user_query,
+                "timestamp": timestamp
+            })
+            st.session_state.processing = True
+            st.rerun()
+        if st.session_state.processing:
+            user_query = st.session_state.messages[-1]["content"]
             if st.session_state.session_initialized:
                 st.chat_message("user", avatar="🧑‍💻").markdown(user_query)
                 with st.chat_message("assistant", avatar="🤖"):
@@ -343,6 +384,7 @@ class FinancialAgentApp:
                     )
                 if "error" in resp:
                     st.error(resp["error"])
+                    st.session_state.processing = False
                 else:
                     st.session_state.history.append({"role": "user", "content": user_query})
                     st.session_state.history.append(
@@ -352,6 +394,7 @@ class FinancialAgentApp:
                         st.session_state.history.append(
                             {"role": "assistant_tool", "content": final_tool}
                         )
+                    st.session_state.processing = False
                     st.rerun()
 
 

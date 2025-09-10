@@ -4,7 +4,7 @@ python-dotenv>=1.1.0
 
 # LangChain ecosystem
 langchain>=0.3.25
-langchain-openai>=0.3.16
+langchain-openai>=0.3.30
 langchain-core>=0.3.59
 langchain-community>=0.3.24
 langchain-text-splitters>=0.3.8
@@ -37,3 +37,4 @@ typing-extensions>=4.13.2
 requests>=2.31.0
 pandas>=2.0.0
 numpy>=1.24.0
+langfuse

@@ -1,8 +1,9 @@
+from langchain_openai import AzureChatOpenAI
 from langgraph_supervisor import create_supervisor
 from langchain.chat_models import init_chat_model
 from langgraph.prebuilt import create_react_agent
 from config.settings import APIConfig
-from langchain_openai import AzureChatOpenAI
+
 
 def supervisor_agent(apiConfig:APIConfig,news_agent: create_react_agent, fundamental_agent:create_react_agent, technical_agent:create_react_agent, humorous_news_agent:create_react_agent) -> create_supervisor:
 # def supervisor_agent(apiConfig: APIConfig, news_agent: create_react_agent, fundamental_agent: create_react_agent,
@@ -28,6 +29,7 @@ def supervisor_agent(apiConfig:APIConfig,news_agent: create_react_agent, fundame
           "- a humorous news agent. Assign any request for humorous or funny news about Dynatrace to this agent\n"
           "- For stock analysis use news agent, fundamental agent and technical agent\n"
           "- Do not answer questions about anything else.\n"
+          "- Please show all the reasoning and planning that you are doing as part of the agent and tool selection"
           # "Assign work to one agent at a time, do not call agents in parallel.\n"
           "Do not do any work yourself."
           "After you get the results, send the results to the users"
