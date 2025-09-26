@@ -5,7 +5,10 @@ import json
 import os
 from typing import Dict, Any, Optional, List
 from dotenv import load_dotenv
+import traceback
+import sys
 
+from langchain_core.tools import ToolException
 # Core imports
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
@@ -16,7 +19,7 @@ from langchain_openai import AzureChatOpenAI
 from langchain_core.runnables import RunnableConfig
 from langchain_core.messages.ai import AIMessageChunk
 from langchain_core.messages.tool import ToolMessage
-
+from mcp import McpError
 
 # Local imports
 from utils import astream_graph, random_uuid
@@ -102,7 +105,24 @@ class MCPApplication:
 
                 # Initialize client
                 client = MultiServerMCPClient(mcp_config)
-                tools = await client.get_tools()
+                tools = []
+                try:
+                    tools = await client.get_tools()
+                except ExceptionGroup as eg:
+                    # Catch any remaining, unhandled exceptions in the group
+                    print("Caught a group containing other, unhandled exceptions.")
+                    for e in eg.exceptions:
+                        print(f"  - Unhandled error: {type(e).__name__} - {e}")
+                # except* McpError as eg:
+                #     print("Caught a group containing one or more McpErrors.")
+                #     for e in eg.exceptions:
+                #         print(f"  - Specific error from MCP: {e}")
+                # except* ConnectionError as eg:
+                #     print("Caught a group containing one or more connection errors.")
+                #     for e in eg.exceptions:
+                #         print(f"  - Specific error from connection: {e}")
+
+
 
                 st.session_state.tool_count = len(tools)
                 st.session_state.mcp_client = client
