@@ -34,12 +34,6 @@ from langfuse.langchain import CallbackHandler
 logger = setup_logging()
 
 load_dotenv()
-# langfuse = Langfuse(
-#     public_key=os.environ["LANGFUSE_PUBLIC_KEY"],
-#     secret_key=os.environ["LANGFUSE_SECRET_KEY"],
-#     host="https://us.cloud.langfuse.com"
-# )
-# langfuse_handler = CallbackHandler()
 
 headers = { "Authorization": "Api-Token " + os.environ.get("DYNATRACE_API_TOKEN") }
 Traceloop.init(
@@ -289,6 +283,7 @@ class FinancialAgentApp:
             final_tool: Final tool call information
         """
         try:
+            #langfuse_handler = CallbackHandler()
             if st.session_state.agent:
                 streaming_callback, accumulated_text_obj, accumulated_tool_obj = (
                     self.get_streaming_callback(text_placeholder, tool_placeholder)
@@ -302,7 +297,6 @@ class FinancialAgentApp:
                             config=RunnableConfig(
                                 recursion_limit=st.session_state.recursion_limit,
                                 thread_id=st.session_state.thread_id,
-                                callbacks=[]
                                 # callbacks=[langfuse_handler]
                             ),
                         ),
