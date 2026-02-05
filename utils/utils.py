@@ -44,7 +44,6 @@ async def astream_graph(
     prev_node = ""
 
     if stream_mode == "messages":
-        print("In messages")
         for chunk_msg, metadata in graph.stream(
             inputs, config, stream_mode=stream_mode
         ):
@@ -60,23 +59,23 @@ async def astream_graph(
                     if hasattr(result, "__await__"):
                         await result
                 else:
-                    if curr_node != prev_node:
-                        print("\n" + "=" * 50)
-                        print(f"🔄 Node: \033[1;36m{curr_node}\033[0m 🔄")
-                        print("- " * 25)
+                    # if curr_node != prev_node:
+                    #     print("\n" + "=" * 50)
+                    #     print(f"🔄 Node: \033[1;36m{curr_node}\033[0m 🔄")
+                    #     print("- " * 25)
 
                     if hasattr(chunk_msg, "content"):
-                        print("chunk_msg has contents")
-                        if isinstance(chunk_msg.content, list):
-                            print("chunk_msg is a list")
-                            for item in chunk_msg.content:
-                                if isinstance(item, dict) and "text" in item:
-                                    print(item["text"], end="", flush=True)
-                        # content
-                        elif isinstance(chunk_msg.content, str):
-                            print(chunk_msg.content, end="", flush=True)
+                        pass
+                        # if isinstance(chunk_msg.content, list):
+                        #     for item in chunk_msg.content:
+                        #         if isinstance(item, dict) and "text" in item:
+                        #             print(item["text"], end="", flush=True)
+                        # # content
+                        # elif isinstance(chunk_msg.content, str):
+                        #     print(chunk_msg.content, end="", flush=True)
                     else:
-                        print(chunk_msg, end="", flush=True)
+                        pass
+                        # print(chunk_msg, end="", flush=True)
 
                 prev_node = curr_node
 
@@ -109,80 +108,83 @@ async def astream_graph(
                             await result
                     else:
                         if node_name != prev_node:
-                            print("\n" + "=" * 50)
-                            print(f"🔄 Node: \033[1;36m{node_name}\033[0m 🔄")
-                            print("- " * 25)
+                            pass
+                            # print("\n" + "=" * 50)
+                            # print(f"🔄 Node: \033[1;36m{node_name}\033[0m 🔄")
+                            # print("- " * 25)
 
                         if isinstance(node_chunk, dict):
-                            for k, v in node_chunk.items():
-                                if isinstance(v, BaseMessage):
-                                    # BaseMessage content
-                                    if hasattr(v, "content"):
-                                        if isinstance(v.content, list):
-                                            for item in v.content:
-                                                if (
-                                                    isinstance(item, dict)
-                                                    and "text" in item
-                                                ):
-                                                    print(
-                                                        item["text"], end="", flush=True
-                                                    )
-                                        else:
-                                            print(v.content, end="", flush=True)
-                                    else:
-                                        v.pretty_print()
-                                elif isinstance(v, list):
-                                    for list_item in v:
-                                        if isinstance(list_item, BaseMessage):
-                                            if hasattr(list_item, "content"):
-                                                if isinstance(list_item.content, list):
-                                                    for item in list_item.content:
-                                                        if (
-                                                            isinstance(item, dict)
-                                                            and "text" in item
-                                                        ):
-                                                            print(
-                                                                item["text"],
-                                                                end="",
-                                                                flush=True,
-                                                            )
-                                                else:
-                                                    print(
-                                                        list_item.content,
-                                                        end="",
-                                                        flush=True,
-                                                    )
-                                            else:
-                                                list_item.pretty_print()
-                                        elif (
-                                            isinstance(list_item, dict)
-                                            and "text" in list_item
-                                        ):
-                                            print(list_item["text"], end="", flush=True)
-                                        else:
-                                            print(list_item, end="", flush=True)
-                                elif isinstance(v, dict) and "text" in v:
-                                    print(v["text"], end="", flush=True)
-                                else:
-                                    print(v, end="", flush=True)
+                            pass
+                            # for k, v in node_chunk.items():
+                            #     if isinstance(v, BaseMessage):
+                            #         # BaseMessage content
+                            #         if hasattr(v, "content"):
+                            #             if isinstance(v.content, list):
+                            #                 for item in v.content:
+                            #                     if (
+                            #                         isinstance(item, dict)
+                            #                         and "text" in item
+                            #                     ):
+                            #                         print(
+                            #                             item["text"], end="", flush=True
+                            #                         )
+                            #             else:
+                            #                 print(v.content, end="", flush=True)
+                            #         else:
+                            #             v.pretty_print()
+                            #     elif isinstance(v, list):
+                            #         for list_item in v:
+                            #             if isinstance(list_item, BaseMessage):
+                            #                 if hasattr(list_item, "content"):
+                            #                     if isinstance(list_item.content, list):
+                            #                         for item in list_item.content:
+                            #                             if (
+                            #                                 isinstance(item, dict)
+                            #                                 and "text" in item
+                            #                             ):
+                            #                                 print(
+                            #                                     item["text"],
+                            #                                     end="",
+                            #                                     flush=True,
+                            #                                 )
+                            #                     else:
+                            #                         print(
+                            #                             list_item.content,
+                            #                             end="",
+                            #                             flush=True,
+                            #                         )
+                            #                 else:
+                            #                     list_item.pretty_print()
+                            #             elif (
+                            #                 isinstance(list_item, dict)
+                            #                 and "text" in list_item
+                            #             ):
+                            #                 print(list_item["text"], end="", flush=True)
+                            #             else:
+                            #                 print(list_item, end="", flush=True)
+                            #     elif isinstance(v, dict) and "text" in v:
+                            #         print(v["text"], end="", flush=True)
+                            #     else:
+                            #         print(v, end="", flush=True)
                         elif node_chunk is not None:
-                            if hasattr(node_chunk, "__iter__") and not isinstance(
-                                node_chunk, str
-                            ):
-                                for item in node_chunk:
-                                    if isinstance(item, dict) and "text" in item:
-                                        print(item["text"], end="", flush=True)
-                                    else:
-                                        print(item, end="", flush=True)
-                            else:
-                                print(node_chunk, end="", flush=True)
+                            pass
+                            # if hasattr(node_chunk, "__iter__") and not isinstance(
+                            #     node_chunk, str
+                            # ):
+                            #     for item in node_chunk:
+                            #         if isinstance(item, dict) and "text" in item:
+                            #             print(item["text"], end="", flush=True)
+                            #         else:
+                            #             print(item, end="", flush=True)
+                            # else:
+                            #     print(node_chunk, end="", flush=True)
 
                     prev_node = node_name
             else:
-                print("\n" + "=" * 50)
-                print(f"🔄 Raw output 🔄")
-                print("- " * 25)
-                print(node_chunks, end="", flush=True)
+                # print("\n" + "=" * 50)
+                # print(f"🔄 Raw output 🔄")
+                # print("- " * 25)
+                # print(node_chunks, end="", flush=True)
                 final_result = {"content": node_chunks}
 
     else:
@@ -252,46 +254,48 @@ async def ainvoke_graph(
                     if hasattr(result, "__await__"):
                         await result
                 else:
-                    print("\n" + "=" * 50)
+                    # print("\n" + "=" * 50)
                     formatted_namespace = format_namespace(namespace)
-                    if formatted_namespace == "root graph":
-                        print(f"🔄 Node: \033[1;36m{node_name}\033[0m 🔄")
-                    else:
-                        print(
-                            f"🔄 Node: \033[1;36m{node_name}\033[0m in [\033[1;33m{formatted_namespace}\033[0m] 🔄"
-                        )
-                    print("- " * 25)
+                    # if formatted_namespace == "root graph":
+                    #     print(f"🔄 Node: \033[1;36m{node_name}\033[0m 🔄")
+                    # else:
+                    #     print(
+                    #         f"🔄 Node: \033[1;36m{node_name}\033[0m in [\033[1;33m{formatted_namespace}\033[0m] 🔄"
+                    #     )
+                    # print("- " * 25)
 
                     if isinstance(node_chunk, dict):
-                        for k, v in node_chunk.items():
-                            if isinstance(v, BaseMessage):
-                                v.pretty_print()
-                            elif isinstance(v, list):
-                                for list_item in v:
-                                    if isinstance(list_item, BaseMessage):
-                                        list_item.pretty_print()
-                                    else:
-                                        print(list_item)
-                            elif isinstance(v, dict):
-                                for node_chunk_key, node_chunk_value in v.items():
-                                    print(f"{node_chunk_key}:\n{node_chunk_value}")
-                            else:
-                                print(f"\033[1;32m{k}\033[0m:\n{v}")
+                        pass
+                        # for k, v in node_chunk.items():
+                        #     if isinstance(v, BaseMessage):
+                        #         v.pretty_print()
+                        #     elif isinstance(v, list):
+                        #         for list_item in v:
+                        #             if isinstance(list_item, BaseMessage):
+                        #                 list_item.pretty_print()
+                        #             else:
+                        #                 print(list_item)
+                        #     elif isinstance(v, dict):
+                        #         for node_chunk_key, node_chunk_value in v.items():
+                        #             print(f"{node_chunk_key}:\n{node_chunk_value}")
+                        #     else:
+                        #         print(f"\033[1;32m{k}\033[0m:\n{v}")
                     elif node_chunk is not None:
-                        if hasattr(node_chunk, "__iter__") and not isinstance(
-                            node_chunk, str
-                        ):
-                            for item in node_chunk:
-                                print(item)
-                        else:
-                            print(node_chunk)
-                    print("=" * 50)
+                        pass
+                        # if hasattr(node_chunk, "__iter__") and not isinstance(
+                        #     node_chunk, str
+                        # ):
+                        #     for item in node_chunk:
+                        #         print(item)
+                        # else:
+                        #     print(node_chunk)
+                    # print("=" * 50)
         else:
-            print("\n" + "=" * 50)
-            print(f"🔄 Raw output 🔄")
-            print("- " * 25)
-            print(node_chunks)
-            print("=" * 50)
+            # print("\n" + "=" * 50)
+            # print(f"🔄 Raw output 🔄")
+            # print("- " * 25)
+            # print(node_chunks)
+            # print("=" * 50)
             final_result = {"content": node_chunks}
 
     return final_result

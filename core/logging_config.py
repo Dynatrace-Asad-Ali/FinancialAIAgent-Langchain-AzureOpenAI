@@ -3,7 +3,7 @@ import logging
 import sys
 from typing import Optional
 
-def setup_logging(level: str = "INFO", log_file: Optional[str] = None) -> logging.Logger:
+def setup_logging(level: str = "WARNING", log_file: Optional[str] = None) -> logging.Logger:
     """Setup logging configuration."""
     logger = logging.getLogger("financial_agent")
     logger.setLevel(getattr(logging, level.upper()))

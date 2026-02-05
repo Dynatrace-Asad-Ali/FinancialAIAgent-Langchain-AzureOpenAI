@@ -51,11 +51,9 @@ class BaseAgent(ABC):
                 name=self.name
             )
 
-            logger.info(f"Initialized {self.name} with {len(self._tools)} tools")
             return self._agent
 
         except Exception as e:
-            logger.error(f"Failed to initialize {self.name}: {str(e)}")
             raise AgentInitializationError(f"Failed to initialize {self.name}: {str(e)}")
 
     @property

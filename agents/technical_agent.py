@@ -3,7 +3,7 @@ from typing import List
 from langchain_core.tools import BaseTool
 from langchain_community.tools.yahoo_finance_news import YahooFinanceNewsTool
 from agents.base_agent import BaseAgent
-from tools.enhanced_fundamental_tool import EnhancedFundamentalTool
+# from tools.enhanced_fundamental_tool import EnhancedFundamentalTool
 from config.settings import APIConfig
 
 class TechnicalAgent(BaseAgent):

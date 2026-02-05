@@ -23,7 +23,7 @@ class FundamentalAgent(BaseAgent):
         """Get fundamental analysis tools."""
         return [
             YahooFinanceNewsTool(),
-            EnhancedFundamentalTool()
+            # EnhancedFundamentalTool()
         ]
 
     def get_prompt(self) -> str:

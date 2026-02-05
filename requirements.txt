@@ -21,7 +21,7 @@ langchain-tavily==0.1.6
 faiss-cpu>=1.11.0
 
 # Observability
-traceloop-sdk>=0.40.3
+traceloop-sdk
 
 # Development and testing
 pytest>=7.0.0
