@@ -1,9 +1,8 @@
-"""Improved fundamental analysis agent."""
+"""Technical analysis agent."""
 from typing import List
 from langchain_core.tools import BaseTool
-from langchain_community.tools.yahoo_finance_news import YahooFinanceNewsTool
+from tools.technical_analysis_tool import TechnicalAnalysisTool
 from agents.base_agent import BaseAgent
-from tools.enhanced_fundamental_tool import EnhancedFundamentalTool
 from config.settings import APIConfig
 
 class TechnicalAgent(BaseAgent):
@@ -13,15 +12,15 @@ class TechnicalAgent(BaseAgent):
         super().__init__(apiConfig, "technical_agent")
 
     def get_tools(self) -> List[BaseTool]:
-        """Get fundamental analysis tools."""
+        """Get technical analysis tools."""
         return [
-          YahooFinanceNewsTool()
+            TechnicalAnalysisTool()
         ]
 
     def get_prompt(self) -> str:
         """Get agent prompt."""
         return (
-            "You are a technical analysis agent that helps users analyze stock prices and trends for a given stock {stock}.\n\n"
+            "You are a technical analysis agent that helps users analyze stock prices and trends.\n\n"
             "INSTRUCTIONS:\n"
             "- Assist ONLY with research-related tasks, DO NOT do any math\n"
             "- After you're done with your tasks, respond to the supervisor directly\n"

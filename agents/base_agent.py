@@ -1,7 +1,8 @@
 """Base agent class with common functionality."""
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
-from langgraph.prebuilt import create_react_agent
+# from langchain.agents import create_react_agent
+from langchain.agents import create_agent
 from langchain_core.tools import BaseTool
 from core.exceptions import AgentInitializationError
 from core.logging_config import setup_logging
@@ -21,7 +22,8 @@ class BaseAgent(ABC):
         timeout=None,
         max_retries=2,
         azure_endpoint=apiConfig.azure_endpoint,
-        api_key=apiConfig.azure_subscription_key
+        api_key=apiConfig.azure_subscription_key,
+        model="gpt-5.1"
       )
       self.model = model
       self.name = name
@@ -38,16 +40,16 @@ class BaseAgent(ABC):
         """Get prompt for this agent."""
         pass
 
-    def initialize(self) -> create_react_agent:
+    def initialize(self) -> create_agent:
         """Initialize the agent."""
         try:
             self._tools = self.get_tools()
             prompt = self.get_prompt()
 
-            self._agent = create_react_agent(
+            self._agent = create_agent(
                 model=self.model,
                 tools=self._tools,
-                prompt=prompt,
+                system_prompt=prompt,
                 name=self.name
             )
 
@@ -59,7 +61,7 @@ class BaseAgent(ABC):
             raise AgentInitializationError(f"Failed to initialize {self.name}: {str(e)}")
 
     @property
-    def agent(self) -> create_react_agent:
+    def agent(self) -> create_agent:
         """Get the initialized agent."""
         if self._agent is None:
             self._agent = self.initialize()

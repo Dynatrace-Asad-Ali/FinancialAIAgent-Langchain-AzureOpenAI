@@ -1,14 +1,10 @@
 """Improved fundamental analysis agent."""
 from typing import List
 from langchain_core.tools import BaseTool
-from langchain_community.tools.yahoo_finance_news import YahooFinanceNewsTool
-from agents.base_agent import BaseAgent
 from tools.enhanced_fundamental_tool import EnhancedFundamentalTool
+from agents.base_agent import BaseAgent
 from config.settings import APIConfig
-from functools import lru_cache
 from core.logging_config import setup_logging
-from core.exceptions import ToolExecutionError
-import time
 
 logger = setup_logging()
 
@@ -17,12 +13,10 @@ class FundamentalAgent(BaseAgent):
 
     def __init__(self, apiConfig: APIConfig):
         super().__init__(apiConfig, "fundamental_agent")
-        self._search_cache = {}
 
     def get_tools(self) -> List[BaseTool]:
         """Get fundamental analysis tools."""
         return [
-            YahooFinanceNewsTool(),
             EnhancedFundamentalTool()
         ]
 
@@ -57,20 +51,3 @@ class FundamentalAgent(BaseAgent):
             "- Conclude with investment thesis summary\n"
         )
 
-    @lru_cache(maxsize=100)
-    def cached_search(self, query: str, max_age_hours: int = 1) -> str:
-        """Cached search to avoid duplicate API calls."""
-        cache_key = f"{query}_{int(time.time() // (max_age_hours * 3600))}"
-
-        if cache_key in self._search_cache:
-            logger.info(f"Using cached result for query: {query}")
-            return self._search_cache[cache_key]
-
-        try:
-            search_tool = DuckDuckGoSearchRun()
-            result = search_tool.run(query)
-            self._search_cache[cache_key] = result
-            return result
-        except Exception as e:
-            logger.error(f"Search failed for query '{query}': {str(e)}")
-            raise ToolExecutionError(f"News search failed: {str(e)}")

@@ -1,12 +1,12 @@
 import os
 from langchain_community.vectorstores import FAISS
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
 from langgraph.prebuilt import create_react_agent
-from langchain import hub
+import langchainhub as hub
 from langchain_openai import AzureChatOpenAI, AzureOpenAIEmbeddings
-from langchain.chains import RetrievalQA
-from langchain.tools import tool
+from langchain_classic.chains import RetrievalQA
+from langchain_core.tools import tool
 from agents.base_agent import BaseAgent
 from config.settings import APIConfig, EmbeddingsConfig
 from langchain_core.tools import BaseTool

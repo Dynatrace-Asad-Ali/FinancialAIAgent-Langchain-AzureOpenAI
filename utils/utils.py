@@ -44,7 +44,6 @@ async def astream_graph(
     prev_node = ""
 
     if stream_mode == "messages":
-        print("In messages")
         for chunk_msg, metadata in graph.stream(
             inputs, config, stream_mode=stream_mode
         ):

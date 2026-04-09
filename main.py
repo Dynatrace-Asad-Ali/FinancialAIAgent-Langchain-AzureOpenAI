@@ -27,26 +27,26 @@ from langchain_core.messages.ai import AIMessageChunk, AIMessage
 from langchain_core.messages.tool import ToolMessage
 from dotenv import load_dotenv
 from traceloop.sdk import Traceloop
-from langfuse import Langfuse
-from langfuse.langchain import CallbackHandler
+# from langfuse import Langfuse
+# from langfuse.langchain import CallbackHandler
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
 # Initialize logging
 logger = setup_logging()
+RequestsInstrumentor().instrument()
 
 load_dotenv()
-# langfuse = Langfuse(
-#     public_key=os.environ["LANGFUSE_PUBLIC_KEY"],
-#     secret_key=os.environ["LANGFUSE_SECRET_KEY"],
-#     host="https://us.cloud.langfuse.com"
-# )
-# langfuse_handler = CallbackHandler()
 
-headers = { "Authorization": "Api-Token " + os.environ.get("DYNATRACE_API_TOKEN") }
+# Set a default USER_AGENT if it's not set, to prevent timeout issues when fetching news
+if not os.environ.get("USER_AGENT"):
+    os.environ["USER_AGENT"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+
+headers = { "Authorization": "Api-Token " + os.environ.get("DYNATRACE_API_TOKEN", "") }
 Traceloop.init(
-    app_name="AATest",
+    app_name=os.environ.get("OTEL_SERVICE_NAME"),
     api_endpoint=os.environ.get("DYNATRACE_EXPORTER_OTLP_ENDPOINT"),
     headers=headers,
-    disable_batch=True
+    disable_batch=True,
 )
 
 # Page configuration
@@ -303,7 +303,6 @@ class FinancialAgentApp:
                                 recursion_limit=st.session_state.recursion_limit,
                                 thread_id=st.session_state.thread_id,
                                 callbacks=[]
-                                # callbacks=[langfuse_handler]
                             ),
                         ),
                         timeout=timeout_seconds,

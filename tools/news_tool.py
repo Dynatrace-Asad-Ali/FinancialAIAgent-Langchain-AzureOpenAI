@@ -3,10 +3,10 @@ from dotenv import load_dotenv
 from langchain_tavily import TavilySearch
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings, OpenAI, ChatOpenAI
-from langchain.chains.retrieval import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_classic.chains.retrieval import create_retrieval_chain
+from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.vectorstores import InMemoryVectorStore
-from langchain import hub
+import langchainhub as hub
 from langchain_core.tools import tool
 import requests
 from langchain_community.tools import DuckDuckGoSearchRun
