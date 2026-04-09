@@ -5,9 +5,10 @@ from tools.enhanced_fundamental_tool import EnhancedFundamentalTool
 from agents.base_agent import BaseAgent
 from config.settings import APIConfig
 from core.logging_config import setup_logging
-
+from traceloop.sdk.decorators import agent
 logger = setup_logging()
 
+@agent(name="fundamental_agent")
 class FundamentalAgent(BaseAgent):
     """Agent for fundamental analysis."""
 
