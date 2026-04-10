@@ -3,7 +3,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
 from langgraph.prebuilt import create_react_agent
-import langchainhub as hub
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import AzureChatOpenAI, AzureOpenAIEmbeddings
 from langchain_classic.chains import RetrievalQA
 from langchain_core.tools import tool
@@ -89,7 +89,9 @@ class HumorousNewsAgent(BaseAgent):
 def retrieve_rag_data() -> str:
   """Provide funny news about Dynatrace """
   query = "Funny news about Dynatrace"
-  prompt = hub.pull("rlm/rag-prompt")
+  prompt = ChatPromptTemplate.from_messages([
+    ("human", "You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.\nQuestion: {question}\nContext: {context}\nAnswer:"),
+  ])
 
   endpoint = os.environ.get("AZURE_ENDPOINT")
   embeddings_model_name = os.environ.get("AZURE_EMBEDDINGS_MODEL_NAME")
