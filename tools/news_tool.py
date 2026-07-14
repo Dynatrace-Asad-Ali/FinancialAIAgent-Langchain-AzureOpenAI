@@ -6,7 +6,7 @@ from langchain_openai import OpenAIEmbeddings, OpenAI, ChatOpenAI
 from langchain_classic.chains.retrieval import create_retrieval_chain
 from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.vectorstores import InMemoryVectorStore
-import langchainhub as hub
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.tools import tool
 import requests
 from langchain_community.tools import DuckDuckGoSearchRun
@@ -26,7 +26,10 @@ def fake_news_search(tool_input: str) -> str:
   embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
   llm = ChatOpenAI()
   vectorstore = InMemoryVectorStore(embedding=embeddings)
-  retrieval_qa_chat_prompt = hub.pull("langchain-ai/retrieval-qa-chat")
+  retrieval_qa_chat_prompt = ChatPromptTemplate.from_messages([
+    ("system", "Answer any use questions based solely on the context below:\n\n<context>\n{context}\n</context>"),
+    ("human", "{input}"),
+  ])
   combine_docs_chain = create_stuff_documents_chain(llm, retrieval_qa_chat_prompt)
   retrieval_chain = create_retrieval_chain(retriever=vectorstore.as_retriever(), combine_docs_chain=combine_docs_chain)
   # return retrieval_chain
