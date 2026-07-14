@@ -6,6 +6,9 @@ import asyncio
 from typing import Optional, Dict, Any
 import time
 import os
+import logging
+logging.getLogger("opentelemetry.sdk.trace").setLevel(logging.ERROR)
+
 # Local imports
 from config.settings import load_config, validate_config
 from core.exceptions import FinancialAgentError, ConfigurationError
@@ -18,7 +21,6 @@ from ui.components import (
 from agents.news_agent import NewsAgent
 from agents.fundamental_agent import FundamentalAgent
 from agents.technical_agent import TechnicalAgent
-from agents.humorous_news_agent import HumorousNewsAgent
 from agents.supervisor_agent import supervisor_agent
 from utils.utils import astream_graph
 from langchain_core.messages import HumanMessage
@@ -61,7 +63,7 @@ class FinancialAgentApp:
     """Main application class."""
 
     def __init__(self):
-        self.api_config, self.app_config, self.embeddings_config = load_config()
+        self.api_config, self.app_config = load_config()
         self.supervisor = None
         self.metrics = {}
 
@@ -87,7 +89,6 @@ class FinancialAgentApp:
                 news_agent_instance = NewsAgent(self.api_config)
                 fundamental_agent_instance = FundamentalAgent(self.api_config)
                 technical_agent_instance = TechnicalAgent(self.api_config)
-                humorous_agent_instance = HumorousNewsAgent(self.api_config,self.embeddings_config)
 
                 # Initialize supervisor
                 self.supervisor = supervisor_agent(
@@ -95,7 +96,6 @@ class FinancialAgentApp:
                     news_agent_instance.agent,
                     fundamental_agent_instance.agent,
                     technical_agent_instance.agent,
-                    humorous_agent_instance.agent
                 ).compile()
 
                 # Initialize session state
