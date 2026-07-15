@@ -1,7 +1,5 @@
-SECRET_SERVER="http://52.186.168.229:3800"
-
 fetch_secret() {
-  curl -s -X POST "$SECRET_SERVER/$1" \
+  curl -s -X POST "$SECRET_SERVER_URL/$1" \
     -H "Content-Type: application/json" \
     -d "{\"password\": \"$WORKSHOP_PASSWORD\"}"
 }
