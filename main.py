@@ -301,7 +301,7 @@ class FinancialAgentApp:
                             callback=streaming_callback,
                             config=RunnableConfig(
                                 recursion_limit=st.session_state.recursion_limit,
-                                thread_id=st.session_state.thread_id,
+                                # thread_id=st.session_state.thread_id,
                                 callbacks=[]
                             ),
                         ),
