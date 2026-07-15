@@ -35,9 +35,14 @@ from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
 # Initialize logging
 logger = setup_logging()
-RequestsInstrumentor().instrument()
 
 load_dotenv()
+
+@st.cache_resource
+def _init_instrumentation():
+    RequestsInstrumentor().instrument()
+
+_init_instrumentation()
 
 # Set a default USER_AGENT if it's not set, to prevent timeout issues when fetching news
 if not os.environ.get("USER_AGENT"):
