@@ -27,14 +27,7 @@ class AppConfig:
     default_model: str = "gpt-4o-mini"
     service_name: str = "FinancialAIAgent"
 
-@dataclass()
-class EmbeddingsConfig:
-    """Configuration settings for vector embeddings"""
-    embeddings_model_name: str
-    embeddings_deployment: str
-
-
-def load_config() -> tuple[APIConfig, AppConfig, EmbeddingsConfig]:
+def load_config() -> tuple[APIConfig, AppConfig]:
     """Load configuration from environment variables."""
     api_config = APIConfig(
       azure_endpoint=os.environ.get("AZURE_ENDPOINT"),
@@ -53,11 +46,7 @@ def load_config() -> tuple[APIConfig, AppConfig, EmbeddingsConfig]:
         default_model=os.getenv("DEFAULT_MODEL", "gpt-4o-mini")
     )
 
-    embeddings_config = EmbeddingsConfig(
-        embeddings_model_name = os.environ.get("AZURE_EMBEDDINGS_MODEL_NAME"),
-        embeddings_deployment = os.environ.get("AZURE_EMBEDDINGS_MODEL_DEPLOYMENT")
-    )
-    return api_config, app_config, embeddings_config
+    return api_config, app_config
 
 def validate_config(api_config: APIConfig) -> list[str]:
     """Validate required configuration."""
