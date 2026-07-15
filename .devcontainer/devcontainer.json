@@ -13,32 +13,8 @@
     "postCreateCommand": "chmod +x .devcontainer/post-create.sh && .devcontainer/post-create.sh",
     // // Add recommended secrets
     "secrets": {
-        "AZURE_ENDPOINT": {
-            "description": "Azure Endpoint. The format looks like this https://<endPoint>.openai.azure.com"
-        },
-        "AZURE_MODEL_NAME": {
-            "description": "Azure Model Name"
-        },
-        "AZURE_DEPLOYMENT": {
-            "description": "Azure Deployment"
-        },
-        "AZURE_SUBSCRIPTION_KEY": {
-            "description": "Azure Subscription Key"
-        },
-        "AZURE_API_VERSION": {
-            "description": "Azure Api Version"
-        },
-        "AZURE_EMBEDDINGS_MODEL_DEPLOYMENT": {
-            "description": "Azure Embeddings Model Deployment"
-        },
-        "AZURE_EMBEDDINGS_MODEL_NAME": {
-            "description": "Azure Embeddings Model Name"
-        },
-        "AZURE_EMBEDDINGS_API_VERSION": {
-            "description": "Azure Embeddings Api Version"
-        },
-        "AZURE_OPENAI_API_KEY": {
-            "description": "Azure OpenAI Api Key"
+        "WORKSHOP_PASSWORD": {
+            "description": "Password provided by the instructor."
         },
         "TAVILY_API_KEY": {
             "description": "Api Key for Tavily Search"
