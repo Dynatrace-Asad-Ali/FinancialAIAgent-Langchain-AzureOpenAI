@@ -41,20 +41,20 @@ load_dotenv()
 @st.cache_resource
 def _init_instrumentation():
     RequestsInstrumentor().instrument()
+    if os.environ.get("DYNATRACE_API_TOKEN"):
+        os.environ.setdefault("OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE", "delta")
+        Traceloop.init(
+            app_name=os.environ.get("OTEL_SERVICE_NAME"),
+            api_endpoint=os.environ.get("DYNATRACE_EXPORTER_OTLP_ENDPOINT"),
+            headers={"Authorization": "Api-Token " + os.environ.get("DYNATRACE_API_TOKEN", "")},
+            disable_batch=True,
+        )
 
 _init_instrumentation()
 
-# Set a default USER_AGENT if it's not set, to prevent timeout issues when fetching news
+# Set a default USER_AGENT if not set, to prevent timeout issues when fetching news
 if not os.environ.get("USER_AGENT"):
     os.environ["USER_AGENT"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-
-# headers = { "Authorization": "Api-Token " + os.environ.get("DYNATRACE_API_TOKEN", "") }
-# Traceloop.init(
-#     app_name=os.environ.get("OTEL_SERVICE_NAME"),
-#     api_endpoint=os.environ.get("DYNATRACE_EXPORTER_OTLP_ENDPOINT"),
-#     headers=headers,
-#     disable_batch=True,
-# )
 
 # Page configuration
 st.set_page_config(
