@@ -3,7 +3,7 @@ SECRET_SERVER="http://52.186.168.229:3800"
 fetch_secret() {
   curl -s -X POST "$SECRET_SERVER/$1" \
     -H "Content-Type: application/json" \
-    -d "{\"password\": \"$SECRET_SERVER_PASSWORD\"}"
+    -d "{\"password\": \"$WORKSHOP_PASSWORD\"}"
 }
 
 # Fetch Azure and OTel values from secret server
@@ -25,4 +25,3 @@ sed -i "s,TAVILY_API_KEY_TOREPLACE,$TAVILY_API_KEY," /workspaces/$RepositoryName
 
 source /workspaces/$RepositoryName/setEnv.sh
 chmod +x /workspaces/$RepositoryName/run.sh
-chmod +x /workspaces/$RepositoryName/mcp/run-mcp.sh
