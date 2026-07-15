@@ -17,7 +17,7 @@
             "description": "Password provided by the instructor."
         },
         "SECRET_SERVER_URL": {
-            "description": "URL of the secret server e.g. http://52.186.168.229:3800"
+            "description": "URL of the secret server"
         },
         "TAVILY_API_KEY": {
             "description": "Api Key for Tavily Search"
