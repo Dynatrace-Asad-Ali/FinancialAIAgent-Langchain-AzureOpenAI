@@ -16,12 +16,12 @@ class NewsAgent(BaseAgent):
 
     def get_prompt(self) -> str:
         return (
-            "You are a news agent that helps users find the latest news.\n\n"
+            "You are a news agent that fetches the latest news using the tavily_search tool.\n\n"
             "INSTRUCTIONS:\n"
+            "- ALWAYS call the tavily_search tool to retrieve current news — never answer from training knowledge\n"
             "- Focus on recent, relevant news articles\n"
             "- Provide concise summaries with key information\n"
             "- Include publication dates when available\n"
-            "- Verify information from multiple sources when possible\n"
             "- If no recent news is found, clearly state this\n"
             "- Limit responses to 4 most relevant news items\n"
             "- Always cite sources with URLs when available\n"
