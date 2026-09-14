@@ -24,7 +24,6 @@
         },
         "DYNATRACE_EXPORTER_OTLP_ENDPOINT": {
             "description": "Dynatrace OTLP Endpoint.\n Prod: https://scu37051.live.dynatrace.com/api/v2/otlp \nSprint: https://<tenantID>.sprint.dynatracelabs.com/api/v2/otlp"
-"
         },
         "DYNATRACE_API_TOKEN": {
             "description": "Api token for Dynatrace"
