@@ -20,6 +20,8 @@ class APIConfig:
     litellm_proxy_url: Optional[str] = None
     litellm_api_key: Optional[str] = None
     litellm_model: Optional[str] = None
+    kong_ai_gateway_url: Optional[str] = None
+    kong_ai_gateway_model: Optional[str] = None
 
 
 @dataclass
@@ -44,6 +46,8 @@ def load_config() -> tuple[APIConfig, AppConfig]:
       litellm_proxy_url=os.getenv("LITELLM_PROXY_URL"),
       litellm_api_key=os.getenv("LITELLM_API_KEY"),
       litellm_model=os.getenv("LITELLM_MODEL"),
+      kong_ai_gateway_url=os.getenv("KONG_AI_GATEWAY_URL"),
+      kong_ai_gateway_model=os.getenv("KONG_AI_GATEWAY_MODEL"),
     )
 
     app_config = AppConfig(
@@ -58,7 +62,7 @@ def validate_config(api_config: APIConfig) -> list[str]:
     """Validate required configuration."""
     errors = []
 
-    if not api_config.litellm_proxy_url and not api_config.azure_subscription_key:
-        errors.append("Either LITELLM_PROXY_URL or Azure Subscription Key is required")
+    if not (api_config.kong_ai_gateway_url or api_config.litellm_proxy_url or api_config.azure_subscription_key):
+        errors.append("One of KONG_AI_GATEWAY_URL, LITELLM_PROXY_URL or Azure Subscription Key is required")
 
     return errors

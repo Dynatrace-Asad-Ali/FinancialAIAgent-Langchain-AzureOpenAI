@@ -15,7 +15,16 @@ class BaseAgent(ABC):
     """Base class for all agents."""
 
     def __init__(self, apiConfig: APIConfig, name: str):
-      if apiConfig.litellm_proxy_url:
+      if apiConfig.kong_ai_gateway_url:
+          model = ChatOpenAI(
+              base_url=apiConfig.kong_ai_gateway_url,
+              api_key="kong",  # unused: Kong injects the Azure key upstream
+              model=apiConfig.kong_ai_gateway_model or "gpt-5.1",
+              max_tokens=None,
+              timeout=None,
+              max_retries=2,
+          )
+      elif apiConfig.litellm_proxy_url:
           model = ChatOpenAI(
               base_url=apiConfig.litellm_proxy_url,
               api_key=apiConfig.litellm_api_key or "sk-placeholder",
