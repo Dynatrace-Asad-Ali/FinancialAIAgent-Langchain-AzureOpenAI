@@ -49,7 +49,8 @@ def _init_instrumentation():
         Traceloop.init(
             app_name=os.environ.get("OTEL_SERVICE_NAME"),
             api_endpoint=os.environ.get("DYNATRACE_EXPORTER_OTLP_ENDPOINT"),
-            headers={"Authorization": "Api-Token " + os.environ.get("DYNATRACE_API_TOKEN", "")},
+            # platform token (dt0s16...) needs openpipeline:traces:ingest + openpipeline:metrics:ingest
+            headers={"Authorization": "Bearer " + os.environ.get("DYNATRACE_API_TOKEN", "")},
             disable_batch=True,
         )
 
