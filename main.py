@@ -32,6 +32,7 @@ from traceloop.sdk import Traceloop
 # from langfuse import Langfuse
 # from langfuse.langchain import CallbackHandler
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry.instrumentation.httpx import HTTPX2ClientInstrumentor
 
 # Initialize logging
 logger = setup_logging()
@@ -41,6 +42,8 @@ load_dotenv()
 @st.cache_resource
 def _init_instrumentation():
     RequestsInstrumentor().instrument()
+    # openai>=3 sends requests via httpx2; this injects traceparent so gateway (LiteLLM/Kong) spans join the app's trace
+    HTTPX2ClientInstrumentor().instrument()
     if os.environ.get("DYNATRACE_API_TOKEN"):
         os.environ.setdefault("OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE", "delta")
         Traceloop.init(

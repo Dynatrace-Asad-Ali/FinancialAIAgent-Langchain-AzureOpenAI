@@ -7,7 +7,7 @@ from langchain_core.tools import BaseTool
 from core.exceptions import AgentInitializationError
 from core.logging_config import setup_logging
 from config.settings import APIConfig
-from langchain_openai import AzureChatOpenAI
+from langchain_openai import AzureChatOpenAI, ChatOpenAI
 
 logger = setup_logging()
 
@@ -15,16 +15,35 @@ class BaseAgent(ABC):
     """Base class for all agents."""
 
     def __init__(self, apiConfig: APIConfig, name: str):
-      model = AzureChatOpenAI(
-        azure_deployment=apiConfig.azure_deployment,
-        api_version=apiConfig.azure_api_version,
-        max_tokens=None,
-        timeout=None,
-        max_retries=2,
-        azure_endpoint=apiConfig.azure_endpoint,
-        api_key=apiConfig.azure_subscription_key,
-        model="gpt-5.1"
-      )
+      if apiConfig.kong_ai_gateway_url:
+          model = ChatOpenAI(
+              base_url=apiConfig.kong_ai_gateway_url,
+              api_key="kong",  # unused: Kong injects the Azure key upstream
+              model=apiConfig.kong_ai_gateway_model or "gpt-5.1",
+              max_tokens=None,
+              timeout=None,
+              max_retries=2,
+          )
+      elif apiConfig.litellm_proxy_url:
+          model = ChatOpenAI(
+              base_url=apiConfig.litellm_proxy_url,
+              api_key=apiConfig.litellm_api_key or "sk-placeholder",
+              model=apiConfig.litellm_model or "gpt-5.1",
+              max_tokens=None,
+              timeout=None,
+              max_retries=2,
+          )
+      else:
+          model = AzureChatOpenAI(
+              azure_deployment=apiConfig.azure_deployment,
+              api_version=apiConfig.azure_api_version,
+              max_tokens=None,
+              timeout=None,
+              max_retries=2,
+              azure_endpoint=apiConfig.azure_endpoint,
+              api_key=apiConfig.azure_subscription_key,
+              model="gpt-5.1",
+          )
       self.model = model
       self.name = name
       self._agent = None

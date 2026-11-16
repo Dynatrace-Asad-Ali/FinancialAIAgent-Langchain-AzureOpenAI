@@ -1,4 +1,5 @@
 .env
+setEnv.sh
 *.pyc
 .idea/
 __pycache__/
